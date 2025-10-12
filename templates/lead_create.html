@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+    <a href = "{%url 'leads:lead-list' %}"> Go back to leads </a>
+    <h1> Create a new lead </h1>
+    <form method = "post">
+        {% csrf_token %} <!-- Django requires a csrf_token to make a post request with the data --> 
+        {{ form.as_p }}
+        <button type = "submit"> Submit </button>
+    </form>
+{% endblock content %}
