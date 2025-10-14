@@ -26,6 +26,11 @@ class Lead(models.Model):
     agent = models.ForeignKey("Agent", on_delete = models.SET_NULL, null = True, blank = True) #You need to put it in "" as the class is not defined at that point 
     category = models.ForeignKey("Category", related_name = "leads", on_delete = models.SET_NULL, null = True, blank = True)
 
+    phone_number = models.CharField(max_length = 20)
+    email = models.EmailField() 
+    date_added = models.DateTimeField(auto_now_add = True) #the date gets added automatically
+    description = models.TextField() 
+
     phoned = models.BooleanField(default = False)
     source = models.CharField(max_length = 100, choices = SOURCE_CHOICES, null = True, blank = True) 
     organization = models.ForeignKey(UserProfile, on_delete = models.CASCADE, null = True, blank = True)

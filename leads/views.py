@@ -86,11 +86,9 @@ class LeadCreateView(OrganizerAndLoginRequiredMixin, CreateView):
     def form_valid(self, form): 
         # set the lead's organization to the organization of the user
         # creating the lead (organizer.userprofile or agent.organization)
-        user = self.request.user
-        if user.is_organizer:
-            form.instance.organization = user.userprofile
-        else:
-            form.instance.organization = user.agent.organization
+        lead = form.save(commit = False)
+        lead.organization = self.request.user.userprofile
+        lead.save() 
 
         # keep existing behavior: if an agent was chosen on the form, the
         # lead.agent will be set from the form; organization now has been
