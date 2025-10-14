@@ -2,4 +2,6 @@
 -When you're logged as an organizer, you will see all the leads and all the agents. 
 
 -Change the first anchor in login, logout and lead create
--Add the new fields for the lead model and to the LeadModelForm (not dateadded as it's not editable)
+-Change the agent and leads detail view 
+-Change the lead categories to be a radio button and on categories display the number of leads in each category
+-Add filtering based on the lead category or any other feature 
