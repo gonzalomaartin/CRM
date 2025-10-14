@@ -2,24 +2,129 @@
 {% load tailwind_filters %}
 
 {% block content %}
-    <section class="text-gray-600 body-font overflow-hidden">
-        <div class="container px-5 py-24 mx-auto">
-            <div class="lg:w-4/5 mx-auto flex flex-wrap">
-                <div class="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
-                    <h2 class="text-sm title-font text-gray-500 tracking-widest">LEAD</h2>
-                    <h1 class="text-gray-900 text-3xl title-font font-medium mb-4">{{lead.first_name}} {{lead.last_name}} </h1>
-                    <div class="flex mb-4">
-                        <a href = "{% url 'leads:lead-detail' lead.pk %}" class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1"">Overview</a>
-                        <a href = "{% url 'leads:category-update' lead.pk %}" class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">Category</a>
-                        <a href = "{%url 'leads:lead-update' lead.pk %}" class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Update Details</a>
+    <section class="bg-gray-50 min-h-screen py-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Header Section -->
+            <div class="mb-12">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-2">{{lead.first_name}} {{lead.last_name}}</h1>
+                        <p class="text-xl text-gray-600">Update Lead Category</p>
                     </div>
-                    <form method = "post">
-                        {% csrf_token %} <!-- Django requires a csrf_token to make a post request with the data --> 
-                        {{ form|crispy }}
-                        <button type = "submit" class = "w-full text-white bg-blue-500 hover:bg-blue-600 px-3 py-2 rounded-md""> Submit </button>
+                    <div class="flex items-center space-x-4">
+                        <a href="{% url 'leads:lead-list' %}" class="inline-flex items-center border-2 border-indigo-600 text-indigo-600 px-6 py-3 rounded-lg font-medium hover:bg-indigo-50 transition-all duration-200">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                            Back to Leads
+                        </a>
+                        {% if request.user.is_organizer %}
+                        <a href="{% url 'leads:lead-update' lead.pk %}" class="inline-flex items-center bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 shadow-md hover:shadow-lg">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            </svg>
+                            Edit Lead
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="mb-8">
+                <div class="flex border-b border-gray-200 bg-white rounded-t-lg">
+                    <a href="{% url 'leads:lead-detail' lead.pk %}" class="flex-1 text-center py-4 px-6 text-gray-600 font-medium hover:text-gray-900 hover:bg-gray-50 transition-all duration-200">
+                        <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        Overview
+                    </a>
+                    <a href="{% url 'leads:category-update' lead.pk %}" class="flex-1 text-center py-4 px-6 text-indigo-600 font-medium border-b-2 border-indigo-600 bg-indigo-50">
+                        <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                        </svg>
+                        Category
+                    </a>
+                    <a href="{% url 'leads:lead-update' lead.pk %}" class="flex-1 text-center py-4 px-6 text-gray-600 font-medium hover:text-gray-900 hover:bg-gray-50 transition-all duration-200">
+                        <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                        Update Details
+                    </a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="max-w-3xl mx-auto">
+                <div class="bg-white rounded-xl p-8 shadow-lg border border-gray-100">
+                    <div class="mb-8">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-bold text-gray-900 mb-1">Update Category</h2>
+                                <p class="text-gray-600">Change the category for this lead to track its status in your sales pipeline</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Current Category Display -->
+                        {% if lead.category %}
+                        <div class="border-l-4 border-purple-500 bg-purple-50 pl-4 py-3 mb-6">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                                    <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-purple-600 font-medium">CURRENT CATEGORY</p>
+                                    <p class="text-lg font-bold text-gray-900">{{ lead.category.name }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="border-l-4 border-gray-400 bg-gray-50 pl-4 py-3 mb-6">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center mr-3">
+                                    <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600 font-medium">CURRENT CATEGORY</p>
+                                    <p class="text-lg font-bold text-gray-900">No category assigned</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Form Section -->
+                    <form method="post" class="space-y-6">
+                        {% csrf_token %}
+                        <div class="space-y-4">
+                            {{ form|crispy }}
+                        </div>
+                        
+                        <div class="pt-6 border-t border-gray-200">
+                            <div class="flex justify-end space-x-4">
+                                <a href="{% url 'leads:lead-detail' lead.pk %}" class="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 rounded-lg font-medium transition-all duration-200">
+                                    Cancel
+                                </a>
+                                <button type="submit" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-medium hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 shadow-md hover:shadow-lg">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Update Category
+                                </button>
+                            </div>
+                        </div>
                     </form>
                 </div>
-                <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src="https://dummyimage.com/400x400">
             </div>
         </div>
     </section>

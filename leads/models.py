@@ -8,7 +8,7 @@ class User(AbstractUser):
     is_agent = models.BooleanField(default = False)
 
 class UserProfile(models.Model): 
-    user = models.OneToOneField(User, on_delete = models.CASCADE, null = True, blank = True)
+    user = models.OneToOneField(User, on_delete = models.CASCADE)
 
     def __str__(self): 
         return self.user.username
@@ -24,14 +24,14 @@ class Lead(models.Model):
     last_name = models.CharField(max_length = 20)
     age = models.IntegerField(default = 0)
     agent = models.ForeignKey("Agent", on_delete = models.SET_NULL, null = True, blank = True) #You need to put it in "" as the class is not defined at that point 
-    category = models.ForeignKey("Category", related_name = "leads", on_delete = models.SET_NULL, null = True, blank = True)
+    category = models.ForeignKey("Category", related_name = "leads", on_delete = models.SET_NULL, null = True, blank = True, default=1)
 
-    phone_number = models.CharField(max_length = 20)
+    phone_number = models.CharField(max_length = 20, null = True, blank = True)
     email = models.EmailField() 
     date_added = models.DateTimeField(auto_now_add = True) #the date gets added automatically
-    description = models.TextField() 
+    description = models.TextField(null = True, blank = True) 
 
-    phoned = models.BooleanField(default = False)
+    phoned = models.BooleanField(default = False, blank = True, null = True)
     source = models.CharField(max_length = 100, choices = SOURCE_CHOICES, null = True, blank = True) 
     organization = models.ForeignKey(UserProfile, on_delete = models.CASCADE, null = True, blank = True)
 
@@ -43,7 +43,7 @@ class Lead(models.Model):
 
 
 class Agent(models.Model): #The agent is a person who is charge of communicating and supervising a set of leads 
-    user = models.OneToOneField(User, on_delete = models.CASCADE, null = True, blank = True)
+    user = models.OneToOneField(User, on_delete = models.CASCADE)
     organization = models.ForeignKey(UserProfile, on_delete = models.CASCADE, null = True, blank = True)
 
     def __str__(self): 
