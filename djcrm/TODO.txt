@@ -1,0 +1,5 @@
+-When you're logged as an agent, you only will be able to see the leads you're responsible for 
+-When you're logged as an organizer, you will see all the leads and all the agents. 
+
+-Change the first anchor in login, logout and lead create
+-Add the new fields for the lead model and to the LeadModelForm (not dateadded as it's not editable)
