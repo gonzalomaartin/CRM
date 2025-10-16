@@ -47,7 +47,9 @@ class Agent(models.Model): #The agent is a person who is charge of communicating
     organization = models.ForeignKey(UserProfile, on_delete = models.CASCADE, null = True, blank = True)
 
     def __str__(self): 
-        return self.user.email
+        if self.user.first_name and self.user.last_name:
+            return f"{self.user.first_name} {self.user.last_name}"
+        return self.user.username
 
 
 
