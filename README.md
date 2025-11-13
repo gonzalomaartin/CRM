@@ -2,6 +2,9 @@
 
 This repository contains a full-featured Customer Relationship Management (CRM) web application built with Django. The app provides lead tracking, agent assignment, category-based pipeline management, user authentication, and a modern responsive UI to help small teams manage customers and sales workflows.
 
+Try it out: https://crmpro.gonzalomartin.dev/  
+Note: This site is hosted on a free service; the first visit may take a couple of minutes to load while the platform wakes and deploys the site. Subsequent loads will be fast.
+
 ## What this project accomplishes
 
 - Streamlines lead and customer tracking with create/read/update/delete (CRUD) operations and category-based organization.
